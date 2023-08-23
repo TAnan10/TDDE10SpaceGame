@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import menu.MenuButtons;
 import menu.MenuSubScene;
 
-public class TheGame {
+public class LevelOne {
 
 	private AnchorPane gamePane;
 	private Scene gameScene;
@@ -41,7 +41,7 @@ public class TheGame {
 	private static final String BackgroundImage = "menu/Images/space.jpg";
 	private List<ImageView> backgroundImages = new ArrayList<>();
 
-	private final static String asteroidImage = "menu/Images/Asteroid-image.png";
+	private final static String asteroidImage = "menu/Images/Asteroid.png";
 	private ImageView[] asteroids;
 
 	private List<ImageView> lasers = new ArrayList<>();
@@ -50,7 +50,7 @@ public class TheGame {
 	private static final int LASER_HEIGHT = 20;
 
 	// Constructor
-	public TheGame() {
+	public LevelOne() {
 		initializeStage();
 		createKeyListeners();
 	}
@@ -157,6 +157,7 @@ public class TheGame {
 
 	private void createSubScene() {
 		gameOver = new MenuSubScene();
+		gameOver.gameOverScene();
 		gamePane.getChildren().add(gameOver);
 		gameOverButton();
 	}
