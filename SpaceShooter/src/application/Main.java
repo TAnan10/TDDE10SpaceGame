@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import menu.MenuDesign;
 
-
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
@@ -21,4 +20,6 @@ public class Main extends Application {
 		launch(args);
 	}
 }
+
+
 

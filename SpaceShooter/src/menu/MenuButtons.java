@@ -12,7 +12,6 @@ public class MenuButtons extends Button {
 		setPrefWidth(150);
 		setStyle("-fx-background-color: #00ff00;");
 		setTextFill(Color.BLACK);
-		
 	}
 	
 }

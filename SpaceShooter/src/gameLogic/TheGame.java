@@ -3,6 +3,7 @@ package gameLogic;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
@@ -10,7 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import menu.MenuButtons;
+import menu.MenuSubScene;
 
 public class TheGame {
 
@@ -18,6 +23,8 @@ public class TheGame {
 	private Scene gameScene;
 	private Stage gameStage;
 	private Stage menuStage;
+
+	private MenuSubScene gameOver;
 
 	private ImageView rocket;
 	private AnimationTimer gameTimer;
@@ -115,10 +122,10 @@ public class TheGame {
 	}
 
 	private void createAsteroids() {
-		asteroids = new ImageView[5];
+		asteroids = new ImageView[ 5];
 		for (int i = 0; i < asteroids.length; i++) {
 			asteroids[i] = new ImageView(asteroidImage);
-			asteroids[i].setFitWidth(50); // Set appropriate dimensions
+			asteroids[i].setFitWidth(50); 
 			asteroids[i].setFitHeight(50);
 			asteroids[i].setLayoutX(Math.random() * (Game_Width - asteroids[i].getFitWidth())); // Random X-coordinate
 			asteroids[i].setLayoutY(-Math.random() * Game_Height); // Random Y-coordinate above the screen
@@ -129,7 +136,7 @@ public class TheGame {
 	private void AsteroidsAnimation() {
 		for (int i = 0; i < asteroids.length; i++) {
 			ImageView asteroid = asteroids[i];
-			asteroid.setLayoutY(asteroid.getLayoutY() + 10); // Adjust the speed as needed
+			asteroid.setLayoutY(asteroid.getLayoutY() + 15); 
 			if (asteroid.getLayoutY() >= Game_Height) {
 				asteroid.setLayoutY(-Math.random() * Game_Height); // Reset to a random position above the screen
 				asteroid.setLayoutX(Math.random() * (Game_Width - asteroid.getFitWidth())); // Random X-coordinate
@@ -146,6 +153,41 @@ public class TheGame {
 				asteroid.setLayoutX(Math.random() * (Game_Width - asteroid.getFitWidth())); // Random X-coordinate
 			}
 		}
+	}
+
+	private void createSubScene() {
+		gameOver = new MenuSubScene();
+		gamePane.getChildren().add(gameOver);
+		gameOverButton();
+	}
+
+	private void gameOverButton() {
+		MenuButtons over = new MenuButtons("Bitch, Play Again");
+		over.setLayoutX(220);
+		over.setLayoutY(480);
+		over.setMinWidth(180);
+		over.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+		gamePane.getChildren().add(over);
+		
+		over.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				resetGame(); // Call the method to reset the game
+	            gamePane.getChildren().remove(gameOver);
+	            gamePane.getChildren().remove(over);
+			}
+			
+		});
+	}
+	
+	private void resetGame() {
+		createBackground();
+		createRocketShip();
+		createAsteroids();
+		createPlayerLives();
+		createLasers();
+		GameLoop();
 	}
 
 	private void createPlayerLives() {
@@ -165,9 +207,8 @@ public class TheGame {
 		gamePane.getChildren().remove(playersLifes[playerLife]);
 		playerLife--;
 		if (playerLife < 0) {
-			gameStage.close();
 			gameTimer.stop();
-			menuStage.show();
+			createSubScene();
 		}
 	}
 
