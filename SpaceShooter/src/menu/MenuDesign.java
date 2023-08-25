@@ -1,8 +1,8 @@
 package menu;
 
-import gameLogic.LevelOne;
-import gameLogic.LevelThree;
 import gameLogic.LevelTwo;
+import gameLogic.LevelThree;
+import gameLogic.LevelOne;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;

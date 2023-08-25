@@ -27,8 +27,6 @@ public class LevelOne {
 
 	private ImageView rocket;
 	private AnimationTimer gameTimer;
-	
-	private List<Enemy> enemies;
 
 	private boolean isLeftKeyPressed;
 	private boolean isRightKeyPressed;
@@ -36,10 +34,10 @@ public class LevelOne {
 	private ImageView[] playersLifes;
 	private int playerLife;
 
-	public static final int Game_Width = 600;
-	public static final int Game_Height = 800;
+	private static final int Game_Width = 600;
+	private static final int Game_Height = 800;
 
-	private static final String BackgroundImage = "menu/Images/space.jpg";
+	private static final String BackgroundImage = "menu/Images/leveltwospace.jpg";
 	private List<ImageView> backgroundImages = new ArrayList<>();
 
 	private final static String asteroidImage = "menu/Images/Asteroid.png";
@@ -54,15 +52,10 @@ public class LevelOne {
 	public LevelOne() {
 		initializeStage();
 		createKeyListeners();
-		enemies = new ArrayList<>();
 	}
 
 	// Methods
 
-	public List<ImageView> getLasers() {
-        return lasers;
-    }
-	
 	// Creating the game window
 	private void initializeStage() {
 		gamePane = new AnchorPane();
@@ -109,7 +102,6 @@ public class LevelOne {
 		createAsteroids();
 		createPlayerLives();
 		createLasers();
-		createEnemies();
 		GameLoop();
 		gameStage.show();
 	}
@@ -121,35 +113,12 @@ public class LevelOne {
 				controlShipAnimation();
 				backgroundAnimation();
 				AsteroidsAnimation();
-				moveEnemies();
 				collisionLogic();
 				moveLasers();
-				handleEnemyCollisions();
 			}
 		};
 		gameTimer.start();
 	}
-	
-	private void createEnemies() {
-        UFOEnemy ufoEnemy1 = new UFOEnemy(0, 50, gamePane, 3, rocket, this);
-        enemies.add(ufoEnemy1);
-        for (Enemy enemy : enemies) {
-            gamePane.getChildren().add(enemy.getEnemyImage());
-        }
-    }
-
-    private void moveEnemies() {
-        for (Enemy enemy : enemies) {
-            enemy.move();
-        }
-    }
-    
-    private void handleEnemyCollisions() {
-        for (Enemy enemy : enemies) {
-            enemy.handleCollision(this);
-        }
-    }
-
 
 	private void createAsteroids() {
 		asteroids = new ImageView[ 5];
@@ -193,7 +162,7 @@ public class LevelOne {
 	}
 
 	private void gameOverButton() {
-		MenuButtons over = new MenuButtons("Play Again");
+		MenuButtons over = new MenuButtons("Bitch, Play Again");
 		over.setLayoutX(220);
 		over.setLayoutY(480);
 		over.setMinWidth(180);
@@ -204,32 +173,22 @@ public class LevelOne {
 
 			@Override
 			public void handle(ActionEvent event) {
+				resetGame(); // Call the method to reset the game
 				gamePane.getChildren().remove(gameOver);
 				gamePane.getChildren().remove(over);
-				resetGame();
 			}
 
 		});
 	}
 
 	private void resetGame() {
-		removeAllEnemies();
 		createBackground();
 		createRocketShip();
 		createAsteroids();
 		createPlayerLives();
 		createLasers();
-		createEnemies();
 		GameLoop();
 	}
-	
-	private void removeAllEnemies() {
-	    for (Enemy enemy : enemies) {
-	        gamePane.getChildren().remove(enemy.getEnemyImage());
-	    }
-	    enemies.clear();
-	}
-
 
 	private void createPlayerLives() {
 		playerLife = 2;
@@ -244,7 +203,7 @@ public class LevelOne {
 		}
 	}
 
-	public void removePlayerLives() {
+	private void removePlayerLives() {
 		gamePane.getChildren().remove(playersLifes[playerLife]);
 		playerLife--;
 		if (playerLife < 0) {
@@ -307,7 +266,7 @@ public class LevelOne {
 				laser.setLayoutY(675);
 				laser.setVisible(true);
 				break;
-			} 
+			}
 		}
 	}
 
@@ -347,10 +306,11 @@ public class LevelOne {
 			}
 		}
 	}
-	
+
 	private boolean areColliding(ImageView object1, ImageView object2) {
 		Bounds bounds1 = object1.getBoundsInParent();
 		Bounds bounds2 = object2.getBoundsInParent();
+
 		return bounds1.intersects(bounds2);
 	}
 }

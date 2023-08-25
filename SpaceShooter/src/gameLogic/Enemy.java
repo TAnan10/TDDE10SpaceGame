@@ -9,8 +9,7 @@ public abstract class Enemy {
     private double speed;
     private double verticalSpeed;
     private double width;
-    private double height;
-    
+    private double height;    
 
     public Enemy(String imagePath, double x, double y, double speed, double verticalSpeed, double width, double height) {
         enemyImage = new ImageView(imagePath);
@@ -46,5 +45,7 @@ public abstract class Enemy {
         enemyImage.setLayoutY(enemyImage.getLayoutY() + verticalSpeed);
     }
 
-    public abstract void handleCollision(LevelOne level);
+    public abstract void handleCollision(LevelTwo level);
+
+	protected abstract void handleCollision(LevelThree levelThree);
 }

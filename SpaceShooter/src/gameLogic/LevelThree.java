@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -13,12 +12,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import menu.MenuButtons;
 import menu.MenuSubScene;
 
 public class LevelThree {
 
+	// Instance Variables
 	private AnchorPane gamePane;
 	private Scene gameScene;
 	private Stage gameStage;
@@ -28,20 +29,19 @@ public class LevelThree {
 	private ImageView rocket;
 	private AnimationTimer gameTimer;
 
+	private List<Enemy> enemies;
+
 	private boolean isLeftKeyPressed;
 	private boolean isRightKeyPressed;
 
 	private ImageView[] playersLifes;
 	private int playerLife;
 
-	private static final int Game_Width = 600;
-	private static final int Game_Height = 800;
+	public static final int Game_Width = 600;
+	public static final int Game_Height = 800;
 
 	private static final String BackgroundImage = "menu/Images/three.png";
 	private List<ImageView> backgroundImages = new ArrayList<>();
-
-	private final static String asteroidImage = "menu/Images/Asteroid.png";
-	private ImageView[] asteroids;
 
 	private List<ImageView> lasers = new ArrayList<>();
 	private static final String LASER_IMAGE = "menu/Images/laserRed02.png";
@@ -52,9 +52,14 @@ public class LevelThree {
 	public LevelThree() {
 		initializeStage();
 		createKeyListeners();
+		enemies = new ArrayList<>();
 	}
 
 	// Methods
+
+	public List<ImageView> getLasers() {
+		return lasers;
+	}
 
 	// Creating the game window
 	private void initializeStage() {
@@ -99,9 +104,9 @@ public class LevelThree {
 		this.menuStage.hide();
 		createBackground();
 		createRocketShip();
-		createAsteroids();
 		createPlayerLives();
 		createLasers();
+		createEnemies();
 		GameLoop();
 		gameStage.show();
 	}
@@ -112,45 +117,31 @@ public class LevelThree {
 			public void handle(long arg0) {
 				controlShipAnimation();
 				backgroundAnimation();
-				AsteroidsAnimation();
-				collisionLogic();
+				moveEnemies();
 				moveLasers();
+				handleEnemyCollisions();
 			}
 		};
 		gameTimer.start();
 	}
 
-	private void createAsteroids() {
-		asteroids = new ImageView[ 5];
-		for (int i = 0; i < asteroids.length; i++) {
-			asteroids[i] = new ImageView(asteroidImage);
-			asteroids[i].setFitWidth(50); 
-			asteroids[i].setFitHeight(50);
-			asteroids[i].setLayoutX(Math.random() * (Game_Width - asteroids[i].getFitWidth())); // Random X-coordinate
-			asteroids[i].setLayoutY(-Math.random() * Game_Height); // Random Y-coordinate above the screen
-			gamePane.getChildren().add(asteroids[i]);
+	private void createEnemies() {
+		RobotEnemy robotEnemy1 = new RobotEnemy(0, 50, gamePane, 10, rocket, this);
+		enemies.add(robotEnemy1);
+		for (Enemy enemy : enemies) {
+			gamePane.getChildren().add(enemy.getEnemyImage());
 		}
 	}
 
-	private void AsteroidsAnimation() {
-		for (int i = 0; i < asteroids.length; i++) {
-			ImageView asteroid = asteroids[i];
-			asteroid.setLayoutY(asteroid.getLayoutY() + 15); 
-			if (asteroid.getLayoutY() >= Game_Height) {
-				asteroid.setLayoutY(-Math.random() * Game_Height); // Reset to a random position above the screen
-				asteroid.setLayoutX(Math.random() * (Game_Width - asteroid.getFitWidth())); // Random X-coordinate
-			}
+	private void moveEnemies() {
+		for (Enemy enemy : enemies) {
+			enemy.move();
 		}
 	}
 
-	private void collisionLogic() {
-		for (int i = 0; i < asteroids.length; i++) {
-			ImageView asteroid = asteroids[i];
-			if (rocket.getBoundsInParent().intersects(asteroid.getBoundsInParent())) {
-				removePlayerLives();
-				asteroid.setLayoutY(-Math.random() * Game_Height); // Reset to a random position above the screen
-				asteroid.setLayoutX(Math.random() * (Game_Width - asteroid.getFitWidth())); // Random X-coordinate
-			}
+	private void handleEnemyCollisions() {
+		for (Enemy enemy : enemies) {
+			enemy.handleCollision(this);
 		}
 	}
 
@@ -162,7 +153,7 @@ public class LevelThree {
 	}
 
 	private void gameOverButton() {
-		MenuButtons over = new MenuButtons("Bitch, Play Again");
+		MenuButtons over = new MenuButtons("Play Again");
 		over.setLayoutX(220);
 		over.setLayoutY(480);
 		over.setMinWidth(180);
@@ -173,21 +164,65 @@ public class LevelThree {
 
 			@Override
 			public void handle(ActionEvent event) {
-				resetGame(); // Call the method to reset the game
 				gamePane.getChildren().remove(gameOver);
 				gamePane.getChildren().remove(over);
+				resetGame();
 			}
 
 		});
 	}
 
 	private void resetGame() {
+		removeAllEnemies();
 		createBackground();
 		createRocketShip();
-		createAsteroids();
 		createPlayerLives();
 		createLasers();
+		createEnemies();
 		GameLoop();
+	}
+
+	private void removeAllEnemies() {
+		for (Enemy enemy : enemies) {
+			gamePane.getChildren().remove(enemy.getEnemyImage());
+		}
+		enemies.clear();
+	}
+	
+	public void showVictoryScreen() {
+		gameTimer.stop();
+		
+		for (ImageView laser : lasers) {
+	        laser.setVisible(false);
+	    }
+ 	    
+	    MenuSubScene victorySubScene = new MenuSubScene();
+	    victorySubScene.setHeight(400);
+	    victorySubScene.setUpPopup();
+	    victorySubScene.setLayoutY(180);
+	    gamePane.getChildren().add(victorySubScene);
+	    
+	    Text victoryText = new Text("Victory");
+	    victoryText.setLayoutX(200);
+	    victoryText.setLayoutY(200);
+	    victoryText.setFont(Font.font("Arial", FontWeight.BOLD, 60));
+	    victorySubScene.getPane().getChildren().add(victoryText);
+
+	    // Create and add the main menu button
+	    MenuButtons menuButton = new MenuButtons("Main Menu");
+	    menuButton.setLayoutX(210);
+	    menuButton.setLayoutY(280);
+	    menuButton.setMinWidth(180);
+	    menuButton.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+	    victorySubScene.getPane().getChildren().add(menuButton);
+
+	    menuButton.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	gameStage.hide();
+	            menuStage.show();
+	        }
+	    });
 	}
 
 	private void createPlayerLives() {
@@ -203,7 +238,7 @@ public class LevelThree {
 		}
 	}
 
-	private void removePlayerLives() {
+	public void removePlayerLives() {
 		gamePane.getChildren().remove(playersLifes[playerLife]);
 		playerLife--;
 		if (playerLife < 0) {
@@ -266,7 +301,7 @@ public class LevelThree {
 				laser.setLayoutY(675);
 				laser.setVisible(true);
 				break;
-			}
+			} 
 		}
 	}
 
@@ -288,32 +323,15 @@ public class LevelThree {
 				laser.setLayoutY(laser.getLayoutY() - 5); // Adjust speed as needed
 				if (laser.getLayoutY() < -LASER_HEIGHT) {
 					laser.setVisible(false);
-				} else {
-					checkLaserMeteorCollisions(laser); // Check for collisions
-				}
+				} 
 			}
 		}
-	}
-
-	private void checkLaserMeteorCollisions(ImageView laser) {
-		for (int i = 0; i < asteroids.length; i++) {
-			ImageView asteroid = asteroids[i];
-			if (asteroid.isVisible() && areColliding(laser, asteroid)) {
-				// Handle collision with brown meteor
-				laser.setVisible(false);
-				asteroid.setLayoutY(-Math.random() * Game_Height); // Reset to a random position above the screen
-				asteroid.setLayoutX(Math.random() * (Game_Width - asteroid.getFitWidth())); // Random X-coordinate
-			}
-		}
-	}
-
-	private boolean areColliding(ImageView object1, ImageView object2) {
-		Bounds bounds1 = object1.getBoundsInParent();
-		Bounds bounds2 = object2.getBoundsInParent();
-
-		return bounds1.intersects(bounds2);
 	}
 }
+
+
+
+
 
 
 
