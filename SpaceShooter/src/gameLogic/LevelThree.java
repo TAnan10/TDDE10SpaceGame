@@ -23,7 +23,6 @@ public class LevelThree {
 	private Scene gameScene;
 	private Stage gameStage;
 	private Stage menuStage;
-
 	private MenuSubScene gameOver;
 
 	private ImageView rocket;
@@ -169,19 +168,19 @@ public class LevelThree {
 		over.setMinWidth(180);
 		over.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 		gamePane.getChildren().add(over);
-		
+
 		over.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				resetGame(); // Call the method to reset the game
-	            gamePane.getChildren().remove(gameOver);
-	            gamePane.getChildren().remove(over);
+				gamePane.getChildren().remove(gameOver);
+				gamePane.getChildren().remove(over);
 			}
-			
+
 		});
 	}
-	
+
 	private void resetGame() {
 		createBackground();
 		createRocketShip();
@@ -261,6 +260,7 @@ public class LevelThree {
 	private void shootLaser(double x) {
 		for (int i = 0; i < lasers.size(); i++) {
 			ImageView laser = lasers.get(i);
+			laser.toFront();
 			if (!laser.isVisible()) {
 				laser.setLayoutX(x);
 				laser.setLayoutY(675);

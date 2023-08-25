@@ -113,7 +113,7 @@ public class MenuDesign {
 			}
 
 		});
-		
+
 		MenuButtons level2 = new MenuButtons("Level 2 - Medium");
 		level2.setLayoutX(130);
 		level2.setLayoutY(170);
@@ -126,7 +126,7 @@ public class MenuDesign {
 			}
 
 		});
-		
+
 		MenuButtons level3 = new MenuButtons("Level 3 - Hard");
 		level3.setLayoutX(130);
 		level3.setLayoutY(280);
@@ -138,7 +138,7 @@ public class MenuDesign {
 				gameWindow.createNewGame(mainStage);
 			}
 		});
-		
+
 		levels.getPane().getChildren().add(level1);
 		levels.getPane().getChildren().add(level2);
 		levels.getPane().getChildren().add(level3);
