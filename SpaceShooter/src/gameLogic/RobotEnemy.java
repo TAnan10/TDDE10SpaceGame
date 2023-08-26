@@ -10,7 +10,7 @@ public class RobotEnemy extends Enemy {
 
 	// Variables
 	private AnchorPane gamePane;
-	private int health = 10;
+	private int health = 15;
 
 	private ImageView robot;
 	private LevelThree level;
@@ -22,7 +22,7 @@ public class RobotEnemy extends Enemy {
 
 	// Constructor
 	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView robot, LevelThree level) {
-		super("menu/Images/robotEnemy.png", x, y, 10, 0.5, 100, 100);
+		super("menu/Images/robotOrange.png", x, y, 10, 0.5, 100, 100);
 		this.gamePane = gamePane;
 		this.health = initialHealth;
 		this.robot = robot;
@@ -72,7 +72,7 @@ public class RobotEnemy extends Enemy {
 	private void moveRobotLasers() {
 		for (int i = 0; i < robotLasers.size(); i++) {
 			ImageView ufoLaser = robotLasers.get(i);
-			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 5); // Adjust laser speed as needed
+			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 15); // Adjust laser speed as needed
 
 			// Check for collision with player's ship
 			if (areColliding(ufoLaser, robot)) {

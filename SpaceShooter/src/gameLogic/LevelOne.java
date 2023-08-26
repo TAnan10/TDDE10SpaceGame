@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import menu.MenuButtons;
 import menu.MenuSubScene;
@@ -33,7 +34,11 @@ public class LevelOne {
 
 	private ImageView[] playersLifes;
 	private int playerLife;
-
+	
+	private Star star;
+	private PointsBox pointsBox;
+	private int playerScore = 0;
+	
 	private static final int Game_Width = 600;
 	private static final int Game_Height = 800;
 
@@ -55,6 +60,9 @@ public class LevelOne {
 	}
 
 	// Methods
+	public static int getGameHeight() {
+        return Game_Height;
+    }
 
 	// Creating the game window
 	private void initializeStage() {
@@ -102,6 +110,8 @@ public class LevelOne {
 		createAsteroids();
 		createPlayerLives();
 		createLasers();
+		createStars();
+		createPointsBox();
 		GameLoop();
 		gameStage.show();
 	}
@@ -113,11 +123,29 @@ public class LevelOne {
 				controlShipAnimation();
 				backgroundAnimation();
 				AsteroidsAnimation();
+				createStarsAnimation();
 				collisionLogic();
 				moveLasers();
 			}
 		};
 		gameTimer.start();
+	}
+	
+	private void createPointsBox() {
+		pointsBox = new PointsBox("POINTS :   ");
+		pointsBox.setLayoutX(460);
+		pointsBox.setLayoutY(20);
+		gamePane.getChildren().add(pointsBox);
+	}
+	
+	private void createStars() {
+		star = new Star("menu/Images/star.png");
+		star.starPosition();
+		gamePane.getChildren().add(star.getStarImageView());
+	}
+	
+	private void createStarsAnimation()  {
+		star.move();
 	}
 
 	private void createAsteroids() {
@@ -151,7 +179,61 @@ public class LevelOne {
 				asteroid.setLayoutY(-Math.random() * Game_Height); // Reset to a random position above the screen
 				asteroid.setLayoutX(Math.random() * (Game_Width - asteroid.getFitWidth())); // Random X-coordinate
 			}
+			
+			starPoints();
 		}
+	}
+	
+	public void starPoints() {
+		if (star.checkCollision(rocket)) {
+			playerScore += 1;
+	        star.starPosition();
+			String textToSet = "POINTS : ";
+			if (playerScore < 5) {
+				textToSet = textToSet += " ";
+			}
+			pointsBox.setText(textToSet + playerScore);
+			
+			if (playerScore > 5) {
+				showVictoryScreen();
+			}
+        }
+	}
+	
+	public void showVictoryScreen() {
+		gameTimer.stop();
+		
+		for (ImageView laser : lasers) {
+	        laser.setVisible(false);
+	    }
+ 	    
+	    MenuSubScene victorySubScene = new MenuSubScene();
+	    victorySubScene.setHeight(400);
+	    victorySubScene.setUpPopup();
+	    victorySubScene.setLayoutY(180);
+	    gamePane.getChildren().add(victorySubScene);
+	    
+	    Text victoryText = new Text("Victory");
+	    victoryText.setLayoutX(200);
+	    victoryText.setLayoutY(200);
+	    victoryText.setFont(Font.font("Arial", FontWeight.BOLD, 60));
+	    victorySubScene.getPane().getChildren().add(victoryText);
+
+	    // Create and add the main menu button
+	    MenuButtons menuButton = new MenuButtons("Main Menu");
+	    menuButton.setLayoutX(210);
+	    menuButton.setLayoutY(280);
+	    menuButton.setMinWidth(180);
+	    menuButton.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+	    victorySubScene.getPane().getChildren().add(menuButton);
+
+	    menuButton.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	gameStage.hide();
+	            menuStage.show();
+	        }
+	    });
 	}
 
 	private void createSubScene() {
@@ -182,11 +264,14 @@ public class LevelOne {
 	}
 
 	private void resetGame() {
+		playerScore = 0;
 		createBackground();
 		createRocketShip();
 		createAsteroids();
 		createPlayerLives();
 		createLasers();
+		createStars();
+		createPointsBox();
 		GameLoop();
 	}
 
@@ -310,7 +395,6 @@ public class LevelOne {
 	private boolean areColliding(ImageView object1, ImageView object2) {
 		Bounds bounds1 = object1.getBoundsInParent();
 		Bounds bounds2 = object2.getBoundsInParent();
-
 		return bounds1.intersects(bounds2);
 	}
 }
