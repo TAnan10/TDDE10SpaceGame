@@ -1,5 +1,9 @@
 package gameLogic;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
@@ -7,6 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -34,10 +41,12 @@ public class LevelOne {
 
 	private ImageView[] playersLifes;
 	private int playerLife;
+	private String playerName;
 	
 	private Star star;
 	private PointsBox pointsBox;
 	private int playerScore = 0;
+	private List<HighScores> highscores = new ArrayList<>();
 	
 	private static final int Game_Width = 600;
 	private static final int Game_Height = 800;
@@ -57,6 +66,7 @@ public class LevelOne {
 	public LevelOne() {
 		initializeStage();
 		createKeyListeners();
+		initializeHighscores();
 	}
 
 	// Methods
@@ -193,15 +203,28 @@ public class LevelOne {
 				textToSet = textToSet += " ";
 			}
 			pointsBox.setText(textToSet + playerScore);
-			
-			if (playerScore > 5) {
-				showVictoryScreen();
-			}
         }
 	}
 	
+	private void updateAndSaveHighscores() {
+        highscores.add(new HighScores(playerName, playerScore));
+
+        try (FileWriter writer = new FileWriter("src/gameLogic/resources/HighScore.txt")) {
+            for (HighScores entry : highscores) {
+                writer.write(entry.getName() + "," + entry.getScore() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
 	public void showVictoryScreen() {
 		gameTimer.stop();
+		
+		if (playerScore > highscores.get(0).getScore()) {
+	        SubScene enterNameSubScene = createEnterNameSubScene();
+	        gamePane.getChildren().add(enterNameSubScene);
+	    }
 		
 		for (ImageView laser : lasers) {
 	        laser.setVisible(false);
@@ -226,6 +249,9 @@ public class LevelOne {
 	    menuButton.setMinWidth(180);
 	    menuButton.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 	    victorySubScene.getPane().getChildren().add(menuButton);
+	    
+	    SubScene enterNameSubScene = createEnterNameSubScene();
+	    victorySubScene.getPane().getChildren().add(enterNameSubScene);
 
 	    menuButton.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override
@@ -235,7 +261,52 @@ public class LevelOne {
 	        }
 	    });
 	}
-
+	
+	private SubScene createEnterNameSubScene() {
+	    MenuSubScene enterNameSubScene = new MenuSubScene();
+	    enterNameSubScene.setHeight(300);
+	    enterNameSubScene.setWidth(400);
+	    enterNameSubScene.setUpPopup();
+	    enterNameSubScene.setLayoutX((Game_Width - 400) / 2);
+	    enterNameSubScene.setLayoutY((Game_Height - 300) / 2);
+	    
+	    // Create UI elements for entering name and saving score
+	    TextField nameField = new TextField();
+	    nameField.setLayoutX(200);
+	    nameField.setLayoutY(60);
+	    nameField.setPromptText("Enter your name");
+	    
+	    Button saveButton = new Button("Save Score");
+	    saveButton.setLayoutX(150);
+	    saveButton.setLayoutY(80);
+	    saveButton.setOnAction(event -> {
+	        playerName = nameField.getText();
+	        updateAndSaveHighscores();
+	        enterNameSubScene.setVisible(false);
+	    });
+	    
+	    enterNameSubScene.getPane().getChildren().addAll(nameField, saveButton);
+	    return enterNameSubScene;
+	}
+	
+	private void initializeHighscores() {
+        // Read highScores from the text file
+		String absolutePath = "src/gameLogic/resources/HighScore.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String name = parts[0];
+                    int score = Integer.parseInt(parts[1]);
+                    highscores.add(new HighScores(name, score));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
 	private void createSubScene() {
 		gameOver = new MenuSubScene();
 		gameOver.gameOverScene();
@@ -244,7 +315,7 @@ public class LevelOne {
 	}
 
 	private void gameOverButton() {
-		MenuButtons over = new MenuButtons("Bitch, Play Again");
+		MenuButtons over = new MenuButtons("Play Again");
 		over.setLayoutX(220);
 		over.setLayoutY(480);
 		over.setMinWidth(180);
@@ -259,7 +330,6 @@ public class LevelOne {
 				gamePane.getChildren().remove(gameOver);
 				gamePane.getChildren().remove(over);
 			}
-
 		});
 	}
 
@@ -289,12 +359,17 @@ public class LevelOne {
 	}
 
 	private void removePlayerLives() {
-		gamePane.getChildren().remove(playersLifes[playerLife]);
-		playerLife--;
-		if (playerLife < 0) {
-			gameTimer.stop();
-			createSubScene();
-		}
+	    gamePane.getChildren().remove(playersLifes[playerLife]);
+	    playerLife--;
+
+	    if (playerLife < 0) {
+	    	gameTimer.stop();
+            createSubScene();
+	        if (highscores.isEmpty() || playerScore > highscores.get(0).getScore()) {
+	        	SubScene enterNameSubScene = createEnterNameSubScene();
+	            gamePane.getChildren().add(enterNameSubScene);
+	        }
+	    }
 	}
 
 	private void createBackground() {

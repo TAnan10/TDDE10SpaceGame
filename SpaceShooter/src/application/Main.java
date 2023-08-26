@@ -3,6 +3,9 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import menu.MenuDesign;
+import java.util.ArrayList;
+import java.util.List;
+import gameLogic.HighScores;
 
 public class Main extends Application {
 	@Override

@@ -2,12 +2,25 @@ package menu;
 
 import gameLogic.LevelTwo;
 import gameLogic.LevelThree;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import gameLogic.HighScores;
 import gameLogic.LevelOne;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MenuDesign {
@@ -20,6 +33,9 @@ public class MenuDesign {
 	private Scene mainScene;
 	private AnchorPane mainPane;
 	private MenuSubScene levels;
+	private MenuSubScene displayHighscore;
+	private MenuSubScene helpScene;
+	private List<HighScores> highscores;
 
 	// Constructor
 	public MenuDesign() {
@@ -80,17 +96,88 @@ public class MenuDesign {
 	}
 
 	private void HighScoresButton() {
-		MenuButtons highScoresButton = new MenuButtons("Highscores");
-		highScoresButton.setLayoutX(220);
-		highScoresButton.setLayoutY(400);
-		mainPane.getChildren().add(highScoresButton);
+	    MenuButtons highScoresButton = new MenuButtons("Highscores");
+	    highScoresButton.setLayoutX(220);
+	    highScoresButton.setLayoutY(400);
+	    mainPane.getChildren().add(highScoresButton);
+
+	    highScoresButton.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent event) {
+	            List<HighScores> highscores = loadHighscoresFromFile();
+	            displayHighscores(highscores);
+	        }
+	    });
 	}
+
+	private List<HighScores> loadHighscoresFromFile() {
+	    List<HighScores> highscores = new ArrayList<>();
+	    
+	    try (BufferedReader reader = new BufferedReader(new FileReader("src/gameLogic/resources/HighScore.txt"))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            String[] parts = line.split(",");
+	            if (parts.length == 2) {
+	                String name = parts[0];
+	                int score = Integer.parseInt(parts[1]);
+	                highscores.add(new HighScores(name, score));
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return highscores;
+	}
+
+	private void displayHighscores(List<HighScores> highscores) {
+		displayHighscore = new MenuSubScene();
+		displayHighscore.setUpPopup();
+		displayHighscore.setLayoutX(105);
+		displayHighscore.setLayoutY(300);
+		displayHighscore.setWidth(400);
+		mainPane.getChildren().add(displayHighscore);
+		
+	    VBox highscoresBox = new VBox(10);
+	    highscoresBox.setLayoutX(140);
+	    
+	    Text title = new Text("Highscores");
+	    title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+	    highscoresBox.getChildren().add(title);
+	    
+	    for (HighScores entry : highscores) {
+	        Text highscoreText = new Text(entry.getName() + " - " + entry.getScore());
+	        highscoreText.setFont(Font.font("Arial", 16));
+	        highscoresBox.getChildren().add(highscoreText);
+	    }
+	    
+	    if (displayHighscore != null) {
+	        displayHighscore.getPane().getChildren().clear(); // Clear previous content
+	        displayHighscore.getPane().getChildren().add(highscoresBox);
+	    }
+	}
+
+
 
 	private void HelpButton() {
 		MenuButtons helpButton = new MenuButtons("Help");
 		helpButton.setLayoutX(220);
 		helpButton.setLayoutY(500);
 		mainPane.getChildren().add(helpButton);
+		
+		helpButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				helpScene = new MenuSubScene();
+				helpScene.setUpPopup();
+				helpScene.setLayoutX(105);
+				helpScene.setLayoutY(300);
+				helpScene.setWidth(400);
+				mainPane.getChildren().add(helpScene);
+			}
+		});
+		
 	}
 
 	private void QuitButton() {
