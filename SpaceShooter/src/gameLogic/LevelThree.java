@@ -226,26 +226,29 @@ public class LevelThree {
 	}
 
 	private void createPlayerLives() {
-		playerLife = 2;
-		playersLifes = new ImageView[3];
+		playerLife = 6;
+		playersLifes = new ImageView[7];
 		for (int i = 0; i < playersLifes.length; i++) {
 			playersLifes[i] = new ImageView("menu/Images/heart.png");
 			playersLifes[i].setFitWidth(20);
 			playersLifes[i].setFitHeight(20);
-			playersLifes[i].setLayoutX(485 + (i * 40));
+			playersLifes[i].setLayoutX(370 + (i * 40));
 			playersLifes[i].setLayoutY(100);
 			gamePane.getChildren().add(playersLifes[i]);
 		}
 	}
 
 	public void removePlayerLives() {
-		gamePane.getChildren().remove(playersLifes[playerLife]);
-		playerLife--;
-		if (playerLife < 0) {
-			gameTimer.stop();
-			createSubScene();
-		}
+	    if (playerLife >= 0) {
+	        gamePane.getChildren().remove(playersLifes[playerLife]);
+	        playerLife--;
+	        if (playerLife < 0) {
+	            gameTimer.stop();
+	            createSubScene();
+	        }
+	    }
 	}
+
 
 	private void createBackground() {
 		for (int i = 0; i < 2; i++) {

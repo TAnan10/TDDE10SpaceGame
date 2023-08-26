@@ -231,13 +231,13 @@ public class LevelTwo {
 	}
 
 	private void createPlayerLives() {
-		playerLife = 2;
-		playersLifes = new ImageView[3];
+		playerLife = 4;
+		playersLifes = new ImageView[5];
 		for (int i = 0; i < playersLifes.length; i++) {
 			playersLifes[i] = new ImageView("menu/Images/heart.png");
 			playersLifes[i].setFitWidth(20);
 			playersLifes[i].setFitHeight(20);
-			playersLifes[i].setLayoutX(485 + (i * 40));
+			playersLifes[i].setLayoutX(445 + (i * 40));
 			playersLifes[i].setLayoutY(100);
 			gamePane.getChildren().add(playersLifes[i]);
 		}

@@ -191,13 +191,13 @@ public class LevelOne {
 	}
 
 	private void createPlayerLives() {
-		playerLife = 2;
-		playersLifes = new ImageView[3];
+		playerLife = 1;
+		playersLifes = new ImageView[2];
 		for (int i = 0; i < playersLifes.length; i++) {
 			playersLifes[i] = new ImageView("menu/Images/heart.png");
 			playersLifes[i].setFitWidth(20);
 			playersLifes[i].setFitHeight(20);
-			playersLifes[i].setLayoutX(485 + (i * 40));
+			playersLifes[i].setLayoutX(515 + (i * 40));
 			playersLifes[i].setLayoutY(100);
 			gamePane.getChildren().add(playersLifes[i]);
 		}

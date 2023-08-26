@@ -9,84 +9,81 @@ import javafx.scene.layout.AnchorPane;
 public class RobotEnemy extends Enemy {
 
 	// Variables
-	private boolean movingRight = true;
-	private double getX = getX();
-	private double getSpeed = getSpeed();
 	private AnchorPane gamePane;
-	private int health = 3;
+	private int health = 10;
 
-	private ImageView rocket;
+	private ImageView robot;
 	private LevelThree level;
 
-	private List<ImageView> ufoLasers = new ArrayList<>();
-	private static final String UFO_LASER_IMAGE = "menu/Images/laserGreen04.png";  // Change this to the UFO's laser image
-	private static final int UFO_LASER_WIDTH = 15;
-	private static final int UFO_LASER_HEIGHT = 40;
+	private List<ImageView> robotLasers = new ArrayList<>();
+	private static final String ROBOT_LASER_IMAGE = "menu/Images/laserGreen04.png";
+	private static final int ROBOT_LASER_WIDTH = 15;
+	private static final int ROBOT_LASER_HEIGHT = 40;
 
 	// Constructor
-	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView rocket, LevelThree level) {
+	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView robot, LevelThree level) {
 		super("menu/Images/robotEnemy.png", x, y, 10, 0.5, 100, 100);
 		this.gamePane = gamePane;
 		this.health = initialHealth;
-		this.rocket = rocket;
+		this.robot = robot;
 		this.level = level;
 	}
 
 	public List<ImageView> getUfoLasers() {
-		return ufoLasers;
+		return robotLasers;
 	}
 
 	@Override
 	public void move() {
-		super.move();
-		moveRobotLasers();
+	    super.move();
+	    moveRobotLasers();
 
-		double ufoX = getEnemyImage().getLayoutX();
-		double ufoY = getEnemyImage().getLayoutY();
+	    double ufoX = getEnemyImage().getLayoutX();
+	    double ufoY = getEnemyImage().getLayoutY();
 
-		if (Math.random() < 0.08) {
-			shootLaser(ufoX + getEnemyImage().getFitWidth() / 2, ufoY);
-		}
+	    if (Math.random() < 0.2) {
+	        shootLaser(ufoX + getEnemyImage().getFitWidth() / 2, ufoY);
+	    }
 
-		if (movingRight) {
-			getX += getSpeed;
-			if (getX + enemyImage.getFitWidth() >= LevelThree.Game_Width) {
-				movingRight = false;
-			}
-		} else {
-			getX -= getSpeed;
-			if (getX <= 0) {
-				movingRight = true;
-			}
-		}
-		enemyImage.setLayoutX(getX);
+	    // Random movement
+	    if (Math.random() < 0.05) {
+	        double randomX = Math.random() * (LevelThree.Game_Width - enemyImage.getFitWidth());
+	        double randomY = Math.random() * (LevelThree.Game_Height / 2); // Limit vertical range
+	        moveTo(randomX, randomY);
+	    }
 	}
+	
+	public void moveTo(double x, double y) {
+        enemyImage.setLayoutX(x);
+        enemyImage.setLayoutY(y);
+    }
+
 
 	private void shootLaser(double x, double y) {
-		ImageView ufoLaser = new ImageView(UFO_LASER_IMAGE);
-		ufoLaser.setLayoutX(x - UFO_LASER_WIDTH / 2);
-		ufoLaser.setLayoutY(y + getEnemyImage().getFitHeight());
-		ufoLaser.setFitWidth(UFO_LASER_WIDTH);
-		ufoLaser.setFitHeight(UFO_LASER_HEIGHT);
-		ufoLasers.add(ufoLaser);
-		gamePane.getChildren().add(ufoLaser);
+		ImageView robotLaser = new ImageView(ROBOT_LASER_IMAGE);
+		robotLaser.setLayoutX(x - ROBOT_LASER_WIDTH / 2);
+		robotLaser.setLayoutY(y + getEnemyImage().getFitHeight());
+		robotLaser.setFitWidth(ROBOT_LASER_WIDTH);
+		robotLaser.setFitHeight(ROBOT_LASER_HEIGHT);
+		robotLasers.add(robotLaser);
+		gamePane.getChildren().add(robotLaser);
 	}
 
 	private void moveRobotLasers() {
-		for (int i = 0; i < ufoLasers.size(); i++) {
-			ImageView ufoLaser = ufoLasers.get(i);
+		for (int i = 0; i < robotLasers.size(); i++) {
+			ImageView ufoLaser = robotLasers.get(i);
 			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 5); // Adjust laser speed as needed
 
 			// Check for collision with player's ship
-			if (areColliding(ufoLaser, rocket)) {
-				ufoLasers.remove(i);
+			if (areColliding(ufoLaser, robot)) {
+				robotLasers.remove(i);
 				gamePane.getChildren().remove(ufoLaser);
 				i--;
 				level.removePlayerLives();
 			}
 
 			if (ufoLaser.getLayoutY() > LevelTwo.Game_Height) {
-				ufoLasers.remove(i);
+				robotLasers.remove(i);
 				gamePane.getChildren().remove(ufoLaser);
 				i--;
 			}
