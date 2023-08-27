@@ -45,6 +45,7 @@ public class LevelOne {
 	private String playerName;
 
 	private boolean doubleLaserPowerUpActive = false;
+	private List<ImageView> extraHearts = new ArrayList<>();
 
 	private Star star;
 	private PointsBox pointsBox;
@@ -392,26 +393,34 @@ public class LevelOne {
 	        extraLife.setLayoutX(460 + (i * 35));
 	        extraLife.setLayoutY(100);
 	        newPlayersLifes[i] = extraLife;
+	        extraHearts.add(extraLife);
 	        gamePane.getChildren().add(extraLife);
 	    }
 	    
 	    playersLifes = newPlayersLifes; // Update the reference
 	}
-
-
-
+	
 	private void removePlayerLives() {
-		gamePane.getChildren().remove(playersLifes[playerLife]);
-		playerLife--;
+	    playerLife--;
 
-		if (playerLife < 0) {
-			gameTimer.stop();
-			createSubScene();
-			if (highscores.isEmpty() || playerScore > highscores.get(0).getScore()) {
-				SubScene enterNameSubScene = createEnterNameSubScene();
-				gamePane.getChildren().add(enterNameSubScene);
-			}
-		}
+	    if (!extraHearts.isEmpty()) {
+	        ImageView removedHeart = extraHearts.remove(extraHearts.size() - 1);
+	        gamePane.getChildren().remove(removedHeart);
+	    } else if (playerLife >= 0) {
+	        gamePane.getChildren().remove(playersLifes[playerLife + 1]);
+	    }
+
+	    if (playerLife < 0) {
+	    	for (ImageView heart : playersLifes) {
+	            gamePane.getChildren().remove(heart);
+	        }
+	        gameTimer.stop();
+	        createSubScene();
+	        if (highscores.isEmpty() || playerScore > highscores.get(0).getScore()) {
+	            SubScene enterNameSubScene = createEnterNameSubScene();
+	            gamePane.getChildren().add(enterNameSubScene);
+	        }
+	    }
 	}
 
 	private void createBackground() {
