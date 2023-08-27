@@ -1,19 +1,17 @@
 package menu;
 
+// Imports
 import gameLogic.LevelTwo;
 import gameLogic.LevelThree;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import gameLogic.HighScores;
 import gameLogic.LevelOne;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -28,14 +26,14 @@ public class MenuDesign {
 	// Variables
 	private static final int windowHeight = 600;
 	private static final int windowWidth = 800;
-
+	
 	private Stage mainStage;
 	private Scene mainScene;
 	private AnchorPane mainPane;
+	
 	private MenuSubScene levels;
 	private MenuSubScene displayHighscore;
 	private MenuSubScene helpScene;
-	private List<HighScores> highscores;
 
 	// Constructor
 	public MenuDesign() {
@@ -49,10 +47,13 @@ public class MenuDesign {
 	}
 
 	// Methods
+	
+	// Getter Method for the mainStage
 	public Stage getMainStage() {
 		return mainStage;
 	}
 
+	// Method for SpaceShooter logo
 	private void createTitle() {
 		ImageView title = new ImageView("menu/Images/Menu_Title.png");
 		title.setFitHeight(200);
@@ -62,11 +63,13 @@ public class MenuDesign {
 		mainPane.getChildren().add(title);
 	}
 
+	// Method for black background in the menu scene
 	private void createBackground() {
 		ImageView background = new ImageView("menu/Images/Menu_Background.jpg");
 		mainPane.getChildren().add(background);
 	}
 
+	// Calls all the button methods
 	private void createAllButtons() {
 		NewGameButton();
 		HighScoresButton();
