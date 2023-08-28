@@ -11,13 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -76,6 +76,10 @@ public class LevelOne {
 	// Methods
 	public static int getGameHeight() {
 		return Game_Height;
+	}
+	
+	public static int getGameWidth() {
+		return Game_Width;
 	}
 
 	// Creating the game window
@@ -207,18 +211,23 @@ public class LevelOne {
 			}
 			pointsBox.setText(textToSet + playerScore);
 
-			/*
+			
 			if (playerScore >= 2) { // PowerUp 1
-				shipSpeed = 15; // Increase ship speed to 12 pixels per frame
+				shipSpeed = 15;
 			}
-*/
+
 			if (playerScore >= 3) { // PowerUp 2
-				doubleLaserPowerUpActive = true; // Activate the double laser power-up
+				doubleLaserPowerUpActive = true;
 			}
 			
-			if (playerScore == 2) { // PowerUp 3
+			if (playerScore == 5) { // PowerUp 3
 	            addExtraLives(2);
 	        }
+			
+			if (playerScore == 10) {
+				showVictoryScreen();
+				createEnterNameSubScene();
+			}
 		}
 	}
 
@@ -237,19 +246,9 @@ public class LevelOne {
 	public void showVictoryScreen() {
 		gameTimer.stop();
 
-		if (playerScore > highscores.get(0).getScore()) {
-			SubScene enterNameSubScene = createEnterNameSubScene();
-			gamePane.getChildren().add(enterNameSubScene);
-		}
-
-		for (ImageView laser : lasers) {
-			laser.setVisible(false);
-		}
-
 		MenuSubScene victorySubScene = new MenuSubScene();
 		victorySubScene.setHeight(400);
 		victorySubScene.setUpPopup();
-		victorySubScene.setLayoutY(180);
 		gamePane.getChildren().add(victorySubScene);
 
 		Text victoryText = new Text("Victory");
@@ -265,9 +264,7 @@ public class LevelOne {
 		menuButton.setMinWidth(180);
 		menuButton.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 		victorySubScene.getPane().getChildren().add(menuButton);
-
-		SubScene enterNameSubScene = createEnterNameSubScene();
-		victorySubScene.getPane().getChildren().add(enterNameSubScene);
+		pointsBox.toFront();
 
 		menuButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -278,31 +275,42 @@ public class LevelOne {
 		});
 	}
 
-	private SubScene createEnterNameSubScene() {
+	private void createEnterNameSubScene() {
 		MenuSubScene enterNameSubScene = new MenuSubScene();
-		enterNameSubScene.setHeight(300);
-		enterNameSubScene.setWidth(400);
-		enterNameSubScene.setUpPopup();
-		enterNameSubScene.setLayoutX((Game_Width - 400) / 2);
-		enterNameSubScene.setLayoutY((Game_Height - 300) / 2);
-
-		// Create UI elements for entering name and saving score
+		enterNameSubScene.createEnterNameSubSceneDesign();
+		
+		Text Title = new Text("Congratulations!");
+		Title.setLayoutX(195);
+		Title.setLayoutY(50);
+		Title.setFill(Color.ALICEBLUE);
+		Title.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+		
+		Text Subtitle = new Text("You Reached A New Highscore!!!");
+		Subtitle.setLayoutX(110);
+		Subtitle.setLayoutY(100);
+		Subtitle.setFill(Color.ALICEBLUE);
+		Subtitle.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+		
 		TextField nameField = new TextField();
-		nameField.setLayoutX(200);
-		nameField.setLayoutY(60);
+		nameField.setPrefHeight(35);
+		nameField.setPrefWidth(180);
+		nameField.setLayoutX(210);
+		nameField.setLayoutY(130);
 		nameField.setPromptText("Enter your name");
 
 		Button saveButton = new Button("Save Score");
-		saveButton.setLayoutX(150);
-		saveButton.setLayoutY(80);
+		saveButton.setPrefHeight(50);
+		saveButton.setPrefWidth(100);
+		saveButton.setLayoutX(250);
+		saveButton.setLayoutY(200);
 		saveButton.setOnAction(event -> {
 			playerName = nameField.getText();
 			updateAndSaveHighscores();
 			enterNameSubScene.setVisible(false);
 		});
 
-		enterNameSubScene.getPane().getChildren().addAll(nameField, saveButton);
-		return enterNameSubScene;
+		enterNameSubScene.getPane().getChildren().addAll(nameField, Title, Subtitle, saveButton);
+		gamePane.getChildren().add(enterNameSubScene);
 	}
 
 	private void initializeHighscores() {
@@ -327,13 +335,14 @@ public class LevelOne {
 		gameOver = new MenuSubScene();
 		gameOver.gameOverScene();
 		gamePane.getChildren().add(gameOver);
+		pointsBox.toFront();
 		gameOverButton();
 	}
 
 	private void gameOverButton() {
 		MenuButtons over = new MenuButtons("Play Again");
 		over.setLayoutX(220);
-		over.setLayoutY(480);
+		over.setLayoutY(400);
 		over.setMinWidth(180);
 		over.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 		gamePane.getChildren().add(over);
@@ -414,11 +423,20 @@ public class LevelOne {
 	    	for (ImageView heart : playersLifes) {
 	            gamePane.getChildren().remove(heart);
 	        }
+	    	
 	        gameTimer.stop();
 	        createSubScene();
-	        if (highscores.isEmpty() || playerScore > highscores.get(0).getScore()) {
-	            SubScene enterNameSubScene = createEnterNameSubScene();
-	            gamePane.getChildren().add(enterNameSubScene);
+	        
+	        boolean canEnterName = true;
+	        for (int i = 0; i < highscores.size(); i++) {
+	            if (playerScore <= highscores.get(i).getScore()) {
+	                canEnterName = false;
+	                break;
+	            }
+	        }
+
+	        if (highscores.isEmpty() || canEnterName) {
+	        	createEnterNameSubScene();
 	        }
 	    }
 	}
