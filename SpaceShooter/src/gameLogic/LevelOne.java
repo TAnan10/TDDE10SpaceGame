@@ -43,6 +43,7 @@ public class LevelOne {
 	private ImageView[] playersLifes;
 	private int playerLife;
 	private String playerName;
+	private String levelNum;
 
 	private boolean doubleLaserPowerUpActive = false;
 	private List<ImageView> extraHearts = new ArrayList<>();
@@ -81,7 +82,7 @@ public class LevelOne {
 	public static int getGameWidth() {
 		return Game_Width;
 	}
-
+	
 	// Creating the game window
 	private void initializeStage() {
 		gamePane = new AnchorPane();
@@ -232,11 +233,11 @@ public class LevelOne {
 	}
 
 	private void updateAndSaveHighscores() {
-		highscores.add(new HighScores(playerName, playerScore));
+		highscores.add(new HighScores(levelNum, playerName, playerScore));
 
 		try (FileWriter writer = new FileWriter("src/gameLogic/resources/HighScore.txt")) {
 			for (HighScores entry : highscores) {
-				writer.write(entry.getName() + "," + entry.getScore() + "\n");
+				writer.write(entry.getLevel() + "," + entry.getName() + "," + entry.getScore() + "\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -297,6 +298,13 @@ public class LevelOne {
 		nameField.setLayoutX(210);
 		nameField.setLayoutY(130);
 		nameField.setPromptText("Enter your name");
+		
+		TextField levelField = new TextField();
+	    levelField.setPrefHeight(35);
+	    levelField.setPrefWidth(180);
+	    levelField.setLayoutX(210);
+	    levelField.setLayoutY(160); // Adjust the Y position as needed
+	    levelField.setPromptText("Enter your level");
 
 		Button saveButton = new Button("Save Score");
 		saveButton.setPrefHeight(50);
@@ -305,30 +313,32 @@ public class LevelOne {
 		saveButton.setLayoutY(200);
 		saveButton.setOnAction(event -> {
 			playerName = nameField.getText();
+			levelNum = levelField.getText();
 			updateAndSaveHighscores();
 			enterNameSubScene.setVisible(false);
 		});
 
-		enterNameSubScene.getPane().getChildren().addAll(nameField, Title, Subtitle, saveButton);
+		enterNameSubScene.getPane().getChildren().addAll(levelField, nameField, Title, Subtitle, saveButton);
 		gamePane.getChildren().add(enterNameSubScene);
 	}
 
 	private void initializeHighscores() {
-		// Read highScores from the text file
-		String absolutePath = "src/gameLogic/resources/HighScore.txt";
-		try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String[] parts = line.split(",");
-				if (parts.length == 2) {
-					String name = parts[0];
-					int score = Integer.parseInt(parts[1]);
-					highscores.add(new HighScores(name, score));
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    // Read highScores from the text file
+	    String absolutePath = "src/gameLogic/resources/HighScore.txt";
+	    try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            String[] parts = line.split(",");
+	            if (parts.length == 3) {
+	                String level = parts[0];
+	                String name = parts[1];
+	                int score = Integer.parseInt(parts[2]);
+	                highscores.add(new HighScores(level, name, score));
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	private void createSubScene() {

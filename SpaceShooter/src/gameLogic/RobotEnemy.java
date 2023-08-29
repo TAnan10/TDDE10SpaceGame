@@ -126,5 +126,4 @@ public class RobotEnemy extends Enemy {
 	protected void handleCollision(LevelThree levelThree) {
 		checkLaserRobotCollisions(level.getLasers());
 	}
-
 }

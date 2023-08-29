@@ -21,6 +21,4 @@ public class PointsBox extends Label {
 		setPadding(new Insets(10, 10, 10, 10));
 		setText(text);
 	}
-	
-
 }

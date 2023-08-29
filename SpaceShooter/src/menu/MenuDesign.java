@@ -12,6 +12,8 @@ import gameLogic.HighScores;
 import gameLogic.LevelOne;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class MenuDesign {
@@ -53,7 +56,7 @@ public class MenuDesign {
 		return mainStage;
 	}
 
-	// Method for SpaceShooter logo
+	// Method for SpaceShooter Logo
 	private void createTitle() {
 		ImageView title = new ImageView("menu/Images/Menu_Title.png");
 		title.setFitHeight(200);
@@ -120,10 +123,11 @@ public class MenuDesign {
 	        String line;
 	        while ((line = reader.readLine()) != null) {
 	            String[] parts = line.split(",");
-	            if (parts.length == 2) {
-	                String name = parts[0];
-	                int score = Integer.parseInt(parts[1]);
-	                highscores.add(new HighScores(name, score));
+	            if (parts.length == 3) {
+	                String level = parts[0];
+	                String name = parts[1];
+	                int score = Integer.parseInt(parts[2]);
+	                highscores.add(new HighScores(level, name, score));
 	            }
 	        }
 	    } catch (IOException e) {
@@ -142,17 +146,20 @@ public class MenuDesign {
 		mainPane.getChildren().add(displayHighscore);
 		
 	    VBox highscoresBox = new VBox(10);
-	    highscoresBox.setLayoutX(140);
+	    highscoresBox.setAlignment(Pos.CENTER);
+	    highscoresBox.setLayoutX(115);
 	    
 	    Text title = new Text("Highscores");
 	    title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
 	    highscoresBox.getChildren().add(title);
 	    
 	    for (HighScores entry : highscores) {
-	        Text highscoreText = new Text(entry.getName() + " - " + entry.getScore());
+	        Text highscoreText = new Text(entry.getLevel() + "-" + entry.getName() + " - " + entry.getScore());
 	        highscoreText.setFont(Font.font("Arial", 16));
 	        highscoresBox.getChildren().add(highscoreText);
 	    }
+	    
+	    mainButtonHighscore();
 	    
 	    if (displayHighscore != null) {
 	        displayHighscore.getPane().getChildren().clear(); // Clear previous content
@@ -160,7 +167,22 @@ public class MenuDesign {
 	    }
 	}
 
+	private void mainButtonHighscore() {
+		MenuButtons menuButton = new MenuButtons("Main Menu");
+		menuButton.setLayoutX(215);
+		menuButton.setLayoutY(600);
+		menuButton.setMinWidth(180);
+		menuButton.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+		mainPane.getChildren().add(menuButton);
 
+		menuButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				displayHighscore.setVisible(false);
+				mainPane.getChildren().remove(menuButton);
+			}
+		});
+	}
 
 	private void HelpButton() {
 		MenuButtons helpButton = new MenuButtons("Help");
@@ -178,9 +200,37 @@ public class MenuDesign {
 				helpScene.setLayoutY(300);
 				helpScene.setWidth(400);
 				mainPane.getChildren().add(helpScene);
+				
+				// Create a VBox to hold the help content
+	            VBox helpContent = new VBox(10);
+	            helpContent.setAlignment(Pos.CENTER); // Center-align the content
+	            helpContent.setPadding(new Insets(20));
+	            
+	            Text title = new Text("Welcome to Space Invaders 2024!!!");
+	            title.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
+	            helpContent.getChildren().add(title);
+
+	            // Add a paragraph about the game
+	            Text paragraph = new Text("In this game there are three levels each with a different enemy. Level one has asteroids, level two has ufo's that can shoot lasers and level three has a robot ship that you cannot catch and shoots green lasers!!! Well how can defeat these enemies and win every level? Don't worry because you will be in a powerful rocket that shoots lasers at lightning speeds! But be aware you have only 2 lives for level one, 4 lives for level two and 6 lives for level three"
+	            );
+	            paragraph.setFont(Font.font("Times New Roman", 14));
+	            paragraph.setWrappingWidth(350);
+	            paragraph.setTextAlignment(TextAlignment.CENTER);
+	            helpContent.getChildren().add(paragraph);
+	            
+	            Text controlsInfo = new Text("To control the rocket all you need is three buttons on the keyboard. The left arrow key to move left, the right arrow key to move right and the spacebar to shoot lasers");
+	            controlsInfo.setFont(Font.font("Times New Roman, 14"));
+	            controlsInfo.setWrappingWidth(350);
+	            controlsInfo.setTextAlignment(TextAlignment.CENTER);
+	            helpContent.getChildren().add(controlsInfo);
+
+	            Text endingText = new Text("Good luck and have fun! And remember do not die!");
+	            endingText.setFont(Font.font("Times New Roman", FontWeight.BOLD, 16));
+	            
+	            helpContent.getChildren().add(endingText);
+	            helpScene.getPane().getChildren().add(helpContent);
 			}
 		});
-		
 	}
 
 	private void QuitButton() {
@@ -188,6 +238,15 @@ public class MenuDesign {
 		quitButton.setLayoutX(220);
 		quitButton.setLayoutY(600);
 		mainPane.getChildren().add(quitButton);
+		
+		quitButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				mainStage.close();
+			}
+			
+		});
 	}
 
 	private void levelButtons() {
@@ -197,7 +256,7 @@ public class MenuDesign {
 		level1.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
-			public void handle(ActionEvent event) {
+			public void handle(ActionEvent event) { 
 				LevelOne gameWindow = new LevelOne();
 				gameWindow.createNewGame(mainStage);
 			}

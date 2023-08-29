@@ -45,8 +45,8 @@ public class LevelThree {
 
 	private List<ImageView> lasers = new ArrayList<>();
 	private static final String LASER_IMAGE = "menu/Images/laserRed02.png";
-	private static final int LASER_WIDTH = 10;
-	private static final int LASER_HEIGHT = 20;
+	private static final int LASER_WIDTH = 15;
+	private static final int LASER_HEIGHT = 40;
 
 	// Constructor
 	public LevelThree() {
