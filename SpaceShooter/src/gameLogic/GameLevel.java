@@ -1,6 +1,7 @@
 package gameLogic;
 
-// Imports
+// 2nd version
+// Imports 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;

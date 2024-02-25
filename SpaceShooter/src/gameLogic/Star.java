@@ -1,5 +1,5 @@
 package gameLogic;
-
+//2nd version
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 
