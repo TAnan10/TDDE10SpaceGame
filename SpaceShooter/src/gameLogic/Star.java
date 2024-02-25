@@ -20,22 +20,24 @@ public class Star {
         return starImageView;
     }
 	
+	// Randomize where the star spawns of the screen
 	public void starPosition() {
 		starImageView.setFitWidth(50); 
 		starImageView.setFitHeight(50);
-		starImageView.setLayoutX(Math.random() * (LevelOne.getGameHeight() - starImageView.getFitWidth())); 
-		starImageView.setLayoutY(-Math.random() * LevelOne.getGameHeight()); 
+		starImageView.setLayoutX(Math.random() * (LevelFour.getGameHeight() - starImageView.getFitWidth())); 
+		starImageView.setLayoutY(-Math.random() * LevelFour.getGameHeight()); 
 	}
 
 	// Animation for moving the star
 	public void move() {
         starImageView.setLayoutY(starImageView.getLayoutY() + 8);
-        if (starImageView.getLayoutY() >= LevelOne.getGameHeight()) {
-        	starImageView.setLayoutY(-Math.random() * LevelOne.getGameHeight()); 
-        	starImageView.setLayoutX(Math.random() * (LevelOne.getGameHeight() - starImageView.getFitWidth())); 
+        if (starImageView.getLayoutY() >= LevelFour.getGameHeight()) {
+        	starImageView.setLayoutY(-Math.random() * LevelFour.getGameHeight()); 
+        	starImageView.setLayoutX(Math.random() * (LevelFour.getGameHeight() - starImageView.getFitWidth())); 
 		}
     }
 	
+	// Collision of start and ship
 	public boolean checkCollision(ImageView playerShip) {
         Bounds starBounds = starImageView.getBoundsInParent();
         Bounds shipBounds = playerShip.getBoundsInParent();

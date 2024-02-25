@@ -13,7 +13,7 @@ public class RobotEnemy extends Enemy {
 	private int health = 15;
 
 	private ImageView robot;
-	private LevelThree level;
+	private LevelSix level;
 
 	private List<ImageView> robotLasers = new ArrayList<>();
 	private static final String ROBOT_LASER_IMAGE = "menu/Images/laserGreen04.png";
@@ -21,7 +21,7 @@ public class RobotEnemy extends Enemy {
 	private static final int ROBOT_LASER_HEIGHT = 40;
 
 	// Constructor
-	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView robot, LevelThree level) {
+	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView robot, LevelSix level) {
 		super("menu/Images/robotOrange.png", x, y, 10, 0.5, 100, 100);
 		this.gamePane = gamePane;
 		this.health = initialHealth;
@@ -41,14 +41,14 @@ public class RobotEnemy extends Enemy {
 	    double ufoX = getEnemyImage().getLayoutX();
 	    double ufoY = getEnemyImage().getLayoutY();
 
-	    if (Math.random() < 0.2) {
+	    if (Math.random() < 0.04) {
 	        shootLaser(ufoX + getEnemyImage().getFitWidth() / 2, ufoY);
 	    }
 
 	    // Random movement
-	    if (Math.random() < 0.05) {
-	        double randomX = Math.random() * (LevelThree.Game_Width - enemyImage.getFitWidth());
-	        double randomY = Math.random() * (LevelThree.Game_Height / 2); // Limit vertical range
+	    if (Math.random() < 0.01) {
+	        double randomX = Math.random() * (LevelSix.getGameHeight() - enemyImage.getFitWidth());
+	        double randomY = Math.random() * (LevelSix.getGameHeight() / 2); // Limit vertical range
 	        moveTo(randomX, randomY);
 	    }
 	}
@@ -72,7 +72,7 @@ public class RobotEnemy extends Enemy {
 	private void moveRobotLasers() {
 		for (int i = 0; i < robotLasers.size(); i++) {
 			ImageView ufoLaser = robotLasers.get(i);
-			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 15); // Adjust laser speed as needed
+			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 3); // Adjust laser speed as needed
 
 			// Check for collision with player's ship
 			if (areColliding(ufoLaser, robot)) {
@@ -82,7 +82,7 @@ public class RobotEnemy extends Enemy {
 				level.removePlayerLives();
 			}
 
-			if (ufoLaser.getLayoutY() > LevelTwo.Game_Height) {
+			if (ufoLaser.getLayoutY() > LevelSix.getGameHeight()) {
 				robotLasers.remove(i);
 				gamePane.getChildren().remove(ufoLaser);
 				i--;
@@ -91,7 +91,7 @@ public class RobotEnemy extends Enemy {
 	}
 
 	@Override
-	public void handleCollision(LevelTwo level) {
+	public void handleCollision(LevelFive level) {
 		
 	}
 
@@ -123,7 +123,7 @@ public class RobotEnemy extends Enemy {
 	}
 
 	@Override
-	protected void handleCollision(LevelThree levelThree) {
+	protected void handleCollision(LevelSix levelSix) {
 		checkLaserRobotCollisions(level.getLasers());
 	}
 }

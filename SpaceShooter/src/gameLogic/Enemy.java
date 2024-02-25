@@ -45,7 +45,7 @@ public abstract class Enemy {
         enemyImage.setLayoutY(enemyImage.getLayoutY() + verticalSpeed);
     }
 
-    public abstract void handleCollision(LevelTwo level);
+    public abstract void handleCollision(LevelFive level);
 
-	protected abstract void handleCollision(LevelThree levelThree);
+	protected abstract void handleCollision(LevelSix levelSix);
 }
