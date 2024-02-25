@@ -1,4 +1,4 @@
-//package gameLogic;// 2nd version
+//package gameLogic;
 //
 //import java.io.BufferedReader;
 //import java.io.FileReader;

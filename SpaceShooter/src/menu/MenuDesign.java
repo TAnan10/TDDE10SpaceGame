@@ -1,5 +1,5 @@
 package menu;
-//2nd version
+
 // Imports
 import gameLogic.LevelFive;
 import java.io.BufferedReader;

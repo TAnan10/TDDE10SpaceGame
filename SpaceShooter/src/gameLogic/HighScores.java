@@ -1,5 +1,5 @@
 package gameLogic;
-//2nd version
+
 public class HighScores {
 	
 	// Variables

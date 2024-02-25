@@ -1,5 +1,5 @@
 package menu;
-//2nd version
+
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 

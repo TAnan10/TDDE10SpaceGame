@@ -1,5 +1,5 @@
 package menu;
-//2nd version
+
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;

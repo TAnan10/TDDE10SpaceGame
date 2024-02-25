@@ -1,5 +1,4 @@
 package application;
-//2nd version
 // Imports
 import javafx.application.Application;
 import javafx.stage.Stage;
