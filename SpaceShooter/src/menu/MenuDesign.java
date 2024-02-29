@@ -1,3 +1,10 @@
+/**
+* This is the main menu
+* Creates the background of the menu
+* Creates the title of the menu
+* Creates 4 menu buttons using MenuButtons class(New Game, Highscores, Help & Quit)
+*/
+
 package menu;
 
 // Imports
@@ -254,7 +261,6 @@ public class MenuDesign {
 		level1.setLayoutX(130);
 		level1.setLayoutY(60);
 		level1.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) { 
 				LevelFour gameWindow = new LevelFour();
@@ -267,27 +273,23 @@ public class MenuDesign {
 		level2.setLayoutX(130);
 		level2.setLayoutY(170);
 		level2.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				LevelFive gameWindow = new LevelFive();
 				gameWindow.createNewGame(mainStage);
 			}
-
 		});
 
 		MenuButtons level3 = new MenuButtons("Level 3 - Hard");
 		level3.setLayoutX(130);
 		level3.setLayoutY(280);
 		level3.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				LevelSix gameWindow = new LevelSix();
 				gameWindow.createNewGame(mainStage);
 			}
 		});
-
 		levels.getPane().getChildren().add(level1);
 		levels.getPane().getChildren().add(level2);
 		levels.getPane().getChildren().add(level3);

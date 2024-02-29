@@ -1,3 +1,10 @@
+/**
+* This class has 3 background images which are used for different menus
+* This class has a method for the gameOver menu which has a certain background
+* A background for the scene where the player gets to choose which level they want to play
+* A background for reaching a new highscore and writing your name and level
+*/
+
 package menu;
 
 import javafx.scene.SubScene;
@@ -25,7 +32,7 @@ public class MenuSubScene extends SubScene {
 			BackgroundPosition.DEFAULT,
 			new BackgroundSize(100, 100, false, false, false, true)
 			);
-	
+
 	BackgroundImage backgroundImage3 = new BackgroundImage(
 			new Image("menu/Images/firework.jpg"),
 			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -39,7 +46,6 @@ public class MenuSubScene extends SubScene {
 	}
 
 	// Methods
-
 	public void gameOverScene() {
 		AnchorPane root2 = (AnchorPane) this.getRoot();
 		root2.setBackground(new Background(backgroundImage));
@@ -63,3 +69,9 @@ public class MenuSubScene extends SubScene {
 		return (AnchorPane) this.getRoot();
 	}
 }
+
+
+
+
+
+

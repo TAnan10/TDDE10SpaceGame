@@ -1,3 +1,9 @@
+/**
+ * The GameLevel class is the abstract class that basically makes the game ready to play
+ * It creates the rocketship, it starts the stage, creates the stars pointsbox, the lasers, 
+ * it updates the highscores, makes sure all the 3 powerups work, showsVictoryScreen
+ * it also has the gameLoop and resetGame when the player wants to play again.
+*/
 package gameLogic;
 
 // Imports 
@@ -65,14 +71,12 @@ public abstract class GameLevel {
 	public static final int LASER_WIDTH = 15;
 	public static final int LASER_HEIGHT = 40;
 
-	// Constructor - All common methods shared across all levels
+	// Constructor
 	public GameLevel() {
 		initializeStage();
 		createKeyListeners();
 		initializeHighscores();
 	}
-
-	// Common Methods
 
 	// Getter methods
 	public Stage getMenuStage() {
@@ -98,6 +102,8 @@ public abstract class GameLevel {
 	public ImageView getRocket() {
 		return rocket;
 	}
+	
+	// Methods
 
 	// Creating the game window
 	private void initializeStage() {
@@ -117,7 +123,7 @@ public abstract class GameLevel {
 				} else if (event.getCode() == KeyCode.RIGHT) {
 					isRightKeyPressed = true;
 				} else if (event.getCode() == KeyCode.SPACE) {
-					// Shoot lasers when the space bar is pressed
+					// If the spacebar is pressed, it calculates the X-coordinate of the rocket and calls a method shootLaser() to initiate the shooting of a laser from the rocket.
 					double shipX = rocket.getLayoutX() + (rocket.getFitWidth() - LASER_WIDTH) / 2;
 					shootLaser(shipX);
 				}

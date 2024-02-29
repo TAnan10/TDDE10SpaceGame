@@ -1,9 +1,14 @@
+/**
+ * The main class opens the main menu by creating an object of the MenuDesign class
+ */
+
 package application;
+
 // Imports
 import javafx.application.Application;
 import javafx.stage.Stage;
 import menu.MenuDesign;
-// pl
+
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
@@ -15,7 +20,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -27,10 +32,6 @@ public class Main extends Application {
 
 
 
-
-
-
-  
 
 
 

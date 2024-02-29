@@ -1,5 +1,13 @@
+/**
+* LevelSix extends GameLevel and uses super keyword to access all the methods
+* to create the game as well as having it's own methods such as creating enemies
+* the animation of enemies, lasers and collision logic. The enemy is from the Robot enemy
+* class.
+*/
+
 package gameLogic;
 
+// Imports
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;

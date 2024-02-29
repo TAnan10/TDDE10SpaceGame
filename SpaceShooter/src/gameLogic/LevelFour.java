@@ -1,5 +1,14 @@
+/**
+* This class has all the levelFour specfic methods and variables. In this level we create
+* our asteroids, it's animation and the collision logic of the asteroids.
+* Since almost the whole game is created in the abstract GameLevel class we just use the
+* super keyword in the LevelFour constructor to create everything we need.
+*/
+
+
 package gameLogic;
 
+// Imports
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
@@ -11,6 +20,7 @@ public class LevelFour extends GameLevel {
 	private final static String asteroidImage = "menu/Images/Asteroid.png";
 	private ImageView[] asteroids;
 
+	// Constructor
 	public LevelFour() {
 		super();
 	}
@@ -68,7 +78,7 @@ public class LevelFour extends GameLevel {
 	private void AsteroidsAnimation() {
 		for (int i = 0; i < asteroids.length; i++) {
 			ImageView asteroid = asteroids[i];
-			asteroid.setLayoutY(asteroid.getLayoutY() + 3); 
+			asteroid.setLayoutY(asteroid.getLayoutY() + 15); 
 			if (asteroid.getLayoutY() >= getGameHeight()) {
 				asteroid.setLayoutY(-Math.random() * getGameHeight()); // Reset to a random position above the screen
 				asteroid.setLayoutX(Math.random() * (getGameWidth() - asteroid.getFitWidth())); // Random X-coordinate

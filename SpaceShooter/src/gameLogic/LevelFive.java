@@ -1,5 +1,13 @@
+/**
+* LevelFive extends GameLevel and uses super keyword to access all the methods
+* to create the game as well as having it's own methods such as creating enemies
+* the animation of enemies, lasers and collision logic. The enemy is from the UFO enemy
+* class.
+*/
+
 package gameLogic;
 
+// Imports
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
@@ -67,11 +75,9 @@ public class LevelFive extends GameLevel {
 		
 		private void createEnemies() {
 			UFOEnemy ufoEnemy1 = new UFOEnemy(0, 50, gamePane, 13, rocket, this);
-//			UFOEnemy ufoEnemy2 = new UFOEnemy(150, 60, gamePane, 5, rocket, this);
-//			UFOEnemy ufoEnemy3 = new UFOEnemy(250, 30, gamePane, 10, rocket, this);
+			UFOEnemy ufoEnemy2 = new UFOEnemy(150, 60, gamePane, 5, rocket, this);
 			enemies.add(ufoEnemy1);
-//			enemies.add(ufoEnemy2);
-//			enemies.add(ufoEnemy3);
+			enemies.add(ufoEnemy2);
 			
 			for (Enemy enemy : enemies) {
 				gamePane.getChildren().add(enemy.getEnemyImage());

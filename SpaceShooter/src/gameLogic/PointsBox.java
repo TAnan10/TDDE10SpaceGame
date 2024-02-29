@@ -1,5 +1,11 @@
+/**
+* This class displays a white box on the top right corner of the game which shows how many
+* points a players has.
+*/
+
 package gameLogic;
 
+// Imports
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

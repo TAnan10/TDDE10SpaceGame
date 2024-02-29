@@ -1,5 +1,11 @@
+/**
+* Here we create the image of the star, where the star spawns in the game, how it moves 
+* and the collision between the star and the ship.
+*/
+
 package gameLogic;
-// we
+
+// Imports
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 

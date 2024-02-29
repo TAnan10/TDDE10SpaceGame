@@ -1,5 +1,12 @@
+/**
+* UfoEnemy extends Enemy class uses super to implement the image, speed, height
+* and width. RobotEnemy also has methods on movement, shooting lasers and collision 
+* logic for lasers and with player's ship. We also initialize a health for the enemy.
+*/
+
 package gameLogic;
 
+// Imports
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Bounds;
@@ -35,6 +42,8 @@ public class UFOEnemy extends Enemy {
 	public List<ImageView> getUfoLasers() {
 		return ufoLasers;
 	}
+	
+	// Methods
 
 	@Override
 	public void move() {
@@ -44,7 +53,7 @@ public class UFOEnemy extends Enemy {
 		double ufoX = getEnemyImage().getLayoutX();
 		double ufoY = getEnemyImage().getLayoutY();
 
-		if (Math.random() < 0.06) {
+		if (Math.random() < 0.08) {
 			shootLaser(ufoX + getEnemyImage().getFitWidth() / 2, ufoY);
 		}
 
@@ -75,7 +84,7 @@ public class UFOEnemy extends Enemy {
 	private void moveUfoLasers() {
 		for (int i = 0; i < ufoLasers.size(); i++) {
 			ImageView ufoLaser = ufoLasers.get(i);
-			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 4); // Adjust laser speed as needed
+			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 8); // Adjust laser speed as needed
 
 			// Check for collision with player's ship
 			if (areColliding(ufoLaser, rocket)) {

@@ -1,5 +1,12 @@
+/**
+* RobotEnemy extends Enemy class uses super to implement the image, speed, height
+* and width. RobotEnemy also has methods on movement, shooting lasers and collision 
+* logic for lasers and with player's ship. We also initialize a health for the enemy.
+*/
+
 package gameLogic;
 
+// Imports
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Bounds;
