@@ -1,5 +1,5 @@
 /**
-* This class has all the levelFour specfic methods and variables. In this level we create
+* This class has all the levelOne specfic methods and variables. In this level we create
 * our asteroids, it's animation and the collision logic of the asteroids.
 * Since almost the whole game is created in the abstract GameLevel class we just use the
 * super keyword in the LevelOne constructor to create everything we need.
