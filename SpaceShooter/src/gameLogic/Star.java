@@ -30,16 +30,16 @@ public class Star {
 	public void starPosition() {
 		starImageView.setFitWidth(50); 
 		starImageView.setFitHeight(50);
-		starImageView.setLayoutX(Math.random() * (LevelFour.getGameHeight() - starImageView.getFitWidth())); 
-		starImageView.setLayoutY(-Math.random() * LevelFour.getGameHeight()); 
+		starImageView.setLayoutX(Math.random() * (LevelOne.getGameHeight() - starImageView.getFitWidth())); 
+		starImageView.setLayoutY(-Math.random() * LevelOne.getGameHeight()); 
 	}
 
 	// Animation for moving the star
 	public void move() {
         starImageView.setLayoutY(starImageView.getLayoutY() + 8);
-        if (starImageView.getLayoutY() >= LevelFour.getGameHeight()) {
-        	starImageView.setLayoutY(-Math.random() * LevelFour.getGameHeight()); 
-        	starImageView.setLayoutX(Math.random() * (LevelFour.getGameHeight() - starImageView.getFitWidth())); 
+        if (starImageView.getLayoutY() >= LevelOne.getGameHeight()) {
+        	starImageView.setLayoutY(-Math.random() * LevelOne.getGameHeight()); 
+        	starImageView.setLayoutX(Math.random() * (LevelOne.getGameHeight() - starImageView.getFitWidth())); 
 		}
     }
 	

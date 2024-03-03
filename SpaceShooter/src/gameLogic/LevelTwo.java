@@ -1,5 +1,5 @@
 /**
-* LevelFive extends GameLevel and uses super keyword to access all the methods
+* LevelTwo extends GameLevel and uses super keyword to access all the methods
 * to create the game as well as having it's own methods such as creating enemies
 * the animation of enemies, lasers and collision logic. The enemy is from the UFO enemy
 * class.
@@ -14,13 +14,13 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class LevelFive extends GameLevel {
+public class LevelTwo extends GameLevel {
 	
 	// Variables
 	private List<Enemy> enemies;
 	
 	// Constructor
-	public LevelFive() {
+	public LevelTwo() {
 		super();
 		enemies = new ArrayList<>();
 	}
@@ -101,7 +101,7 @@ public class LevelFive extends GameLevel {
 			for (int i = 0; i < lasers.size(); i++) {
 				ImageView laser = lasers.get(i);
 				laser.setLayoutY(laser.getLayoutY() - 5);
-				if (laser.getLayoutY() > LevelFive.getGameHeight()) {
+				if (laser.getLayoutY() > LevelTwo.getGameHeight()) {
 					lasers.remove(i);
 					gamePane.getChildren().remove(laser);
 					i--;

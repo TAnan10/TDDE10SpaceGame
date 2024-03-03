@@ -20,7 +20,7 @@ public class RobotEnemy extends Enemy {
 	private int health = 15;
 
 	private ImageView robot;
-	private LevelSix level;
+	private LevelThree level;
 
 	private List<ImageView> robotLasers = new ArrayList<>();
 	private static final String ROBOT_LASER_IMAGE = "menu/Images/laserGreen04.png";
@@ -28,7 +28,7 @@ public class RobotEnemy extends Enemy {
 	private static final int ROBOT_LASER_HEIGHT = 40;
 
 	// Constructor
-	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView robot, LevelSix level) {
+	public RobotEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView robot, LevelThree level) {
 		super("menu/Images/robotOrange.png", x, y, 10, 0.5, 100, 100);
 		this.gamePane = gamePane;
 		this.health = initialHealth;
@@ -54,8 +54,8 @@ public class RobotEnemy extends Enemy {
 
 	    // Random movement
 	    if (Math.random() < 0.01) {
-	        double randomX = Math.random() * (LevelSix.getGameHeight() - enemyImage.getFitWidth());
-	        double randomY = Math.random() * (LevelSix.getGameHeight() / 2); // Limit vertical range
+	        double randomX = Math.random() * (LevelThree.getGameHeight() - enemyImage.getFitWidth());
+	        double randomY = Math.random() * (LevelThree.getGameHeight() / 2); // Limit vertical range
 	        moveTo(randomX, randomY);
 	    }
 	}
@@ -89,7 +89,7 @@ public class RobotEnemy extends Enemy {
 				level.removePlayerLives();
 			}
 
-			if (ufoLaser.getLayoutY() > LevelSix.getGameHeight()) {
+			if (ufoLaser.getLayoutY() > LevelThree.getGameHeight()) {
 				robotLasers.remove(i);
 				gamePane.getChildren().remove(ufoLaser);
 				i--;
@@ -98,7 +98,7 @@ public class RobotEnemy extends Enemy {
 	}
 
 	@Override
-	public void handleCollision(LevelFive level) {
+	public void handleCollision(LevelTwo level) {
 		
 	}
 
@@ -130,7 +130,7 @@ public class RobotEnemy extends Enemy {
 	}
 
 	@Override
-	protected void handleCollision(LevelSix levelSix) {
+	protected void handleCollision(LevelThree levelThree) {
 		checkLaserRobotCollisions(level.getLasers());
 	}
 }

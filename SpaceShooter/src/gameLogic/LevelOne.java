@@ -2,7 +2,7 @@
 * This class has all the levelFour specfic methods and variables. In this level we create
 * our asteroids, it's animation and the collision logic of the asteroids.
 * Since almost the whole game is created in the abstract GameLevel class we just use the
-* super keyword in the LevelFour constructor to create everything we need.
+* super keyword in the LevelOne constructor to create everything we need.
 */
 
 
@@ -14,14 +14,14 @@ import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class LevelFour extends GameLevel {
+public class LevelOne extends GameLevel {
 
 	// Variables
 	private final static String asteroidImage = "menu/Images/Asteroid.png";
 	private ImageView[] asteroids;
 
 	// Constructor
-	public LevelFour() {
+	public LevelOne() {
 		super();
 	}
 
@@ -62,7 +62,7 @@ public class LevelFour extends GameLevel {
 		createAsteroids();
 	}
 
-	// LevelFour specfic methods
+	// LevelOne specfic methods
 	private void createAsteroids() {
 		asteroids = new ImageView[ 5];
 		for (int i = 0; i < asteroids.length; i++) {
@@ -78,7 +78,7 @@ public class LevelFour extends GameLevel {
 	private void AsteroidsAnimation() {
 		for (int i = 0; i < asteroids.length; i++) {
 			ImageView asteroid = asteroids[i];
-			asteroid.setLayoutY(asteroid.getLayoutY() + 15); 
+			asteroid.setLayoutY(asteroid.getLayoutY() + 5); 
 			if (asteroid.getLayoutY() >= getGameHeight()) {
 				asteroid.setLayoutY(-Math.random() * getGameHeight()); // Reset to a random position above the screen
 				asteroid.setLayoutX(Math.random() * (getGameWidth() - asteroid.getFitWidth())); // Random X-coordinate
@@ -102,7 +102,7 @@ public class LevelFour extends GameLevel {
 		for (int i = 0; i < lasers.size(); i++) {
 			ImageView laser = lasers.get(i);
 			laser.setLayoutY(laser.getLayoutY() - 10);
-			if (laser.getLayoutY() > LevelFive.getGameHeight()) {
+			if (laser.getLayoutY() > LevelTwo.getGameHeight()) {
 				lasers.remove(i);
 				getGamePane().getChildren().remove(laser);
 				i--;

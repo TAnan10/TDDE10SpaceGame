@@ -23,7 +23,7 @@ public class UFOEnemy extends Enemy {
 	private int health = 100;
 
 	private ImageView rocket;
-	private LevelFive level;
+	private LevelTwo level;
 
 	private List<ImageView> ufoLasers = new ArrayList<>();
 	private static final String UFO_LASER_IMAGE = "menu/Images/laserGreen04.png";  // Change this to the UFO's laser image
@@ -31,8 +31,8 @@ public class UFOEnemy extends Enemy {
 	private static final int UFO_LASER_HEIGHT = 40;
 
 	// Constructor
-	public UFOEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView rocket, LevelFive level) {
-		super("menu/Images/ufo.png", x, y, 10, 0.5, 100, 100);
+	public UFOEnemy(double x, double y, AnchorPane gamePane, int initialHealth, ImageView rocket, LevelTwo level) {
+		super("menu/Images/ufo.png", x, y, 8, 0.1, 100, 100);
 		this.gamePane = gamePane;
 		this.health = initialHealth;
 		this.rocket = rocket;
@@ -53,13 +53,13 @@ public class UFOEnemy extends Enemy {
 		double ufoX = getEnemyImage().getLayoutX();
 		double ufoY = getEnemyImage().getLayoutY();
 
-		if (Math.random() < 0.08) {
+		if (Math.random() < 0.01) {
 			shootLaser(ufoX + getEnemyImage().getFitWidth() / 2, ufoY);
 		}
 
 		if (movingRight) {
 			getX += getSpeed;
-			if (getX + enemyImage.getFitWidth() >= LevelFive.getGameHeight()) {
+			if (getX + enemyImage.getFitWidth() >= LevelTwo.getGameHeight()) {
 				movingRight = false;
 			}
 		} else {
@@ -84,7 +84,7 @@ public class UFOEnemy extends Enemy {
 	private void moveUfoLasers() {
 		for (int i = 0; i < ufoLasers.size(); i++) {
 			ImageView ufoLaser = ufoLasers.get(i);
-			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 8); // Adjust laser speed as needed
+			ufoLaser.setLayoutY(ufoLaser.getLayoutY() + 3); // Adjust laser speed as needed
 
 			// Check for collision with player's ship
 			if (areColliding(ufoLaser, rocket)) {
@@ -94,7 +94,7 @@ public class UFOEnemy extends Enemy {
 				level.removePlayerLives();
 			}
 
-			if (ufoLaser.getLayoutY() > LevelFive.getGameHeight()) {
+			if (ufoLaser.getLayoutY() > LevelTwo.getGameHeight()) {
 				ufoLasers.remove(i);
 				gamePane.getChildren().remove(ufoLaser);
 				i--;
@@ -103,7 +103,7 @@ public class UFOEnemy extends Enemy {
 	}
 
 	@Override
-	public void handleCollision(LevelFive level) {
+	public void handleCollision(LevelTwo level) {
 		checkLaserUFOCollisions(level.getLasers()); // Pass lasers from LevelTwo class
 	}
 
@@ -135,6 +135,6 @@ public class UFOEnemy extends Enemy {
 	}
 
 	@Override
-	protected void handleCollision(LevelSix levelSix) {
+	protected void handleCollision(LevelThree levelThree) {
 	}
 }

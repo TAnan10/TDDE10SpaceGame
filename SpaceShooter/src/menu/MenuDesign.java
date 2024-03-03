@@ -8,15 +8,15 @@
 package menu;
 
 // Imports
-import gameLogic.LevelFive;
+import gameLogic.LevelTwo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import gameLogic.HighScores;
-import gameLogic.LevelFour;
-import gameLogic.LevelSix;
+import gameLogic.LevelOne;
+import gameLogic.LevelThree;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -263,7 +263,7 @@ public class MenuDesign {
 		level1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) { 
-				LevelFour gameWindow = new LevelFour();
+				LevelOne gameWindow = new LevelOne();
 				gameWindow.createNewGame(mainStage);
 			}
 
@@ -275,7 +275,7 @@ public class MenuDesign {
 		level2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				LevelFive gameWindow = new LevelFive();
+				LevelTwo gameWindow = new LevelTwo();
 				gameWindow.createNewGame(mainStage);
 			}
 		});
@@ -286,7 +286,7 @@ public class MenuDesign {
 		level3.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				LevelSix gameWindow = new LevelSix();
+				LevelThree gameWindow = new LevelThree();
 				gameWindow.createNewGame(mainStage);
 			}
 		});

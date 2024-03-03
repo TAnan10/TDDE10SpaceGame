@@ -56,7 +56,7 @@ public abstract class Enemy {
     }
     
     // Abstract Methods
-    public abstract void handleCollision(LevelFive level);
+    public abstract void handleCollision(LevelTwo level);
 
-	protected abstract void handleCollision(LevelSix levelSix);
+	protected abstract void handleCollision(LevelThree levelThree);
 }

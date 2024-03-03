@@ -1,5 +1,5 @@
 /**
-* LevelSix extends GameLevel and uses super keyword to access all the methods
+* LevelThree extends GameLevel and uses super keyword to access all the methods
 * to create the game as well as having it's own methods such as creating enemies
 * the animation of enemies, lasers and collision logic. The enemy is from the Robot enemy
 * class.
@@ -14,12 +14,12 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class LevelSix extends GameLevel {
+public class LevelThree extends GameLevel {
 	// Variablers
 	private List<Enemy> enemies;
 
 	//Constructor
-	public LevelSix() {
+	public LevelThree() {
 		super();
 		enemies = new ArrayList<>();
 	}
@@ -63,7 +63,7 @@ public class LevelSix extends GameLevel {
 	}
 
 	private void createEnemies() {
-		RobotEnemy robotEnemy1 = new RobotEnemy(0, 50, gamePane, 10, rocket, this);
+		RobotEnemy robotEnemy1 = new RobotEnemy(0, 50, gamePane, 8, rocket, this);
 		enemies.add(robotEnemy1);
 		for (Enemy enemy : enemies) {
 			gamePane.getChildren().add(enemy.getEnemyImage());
